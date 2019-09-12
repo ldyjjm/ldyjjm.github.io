@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
-    <url>%2F2019%2F09%2F12%2Fcreate-blog%2F</url>
-    <content type="text"><![CDATA[最近打算看一些框架的源码，但是在正式看之前，突然觉得缺少一个保存和记录的平台，虽然平时也会在掘金、有道云写一些收获，但是觉得还是有点太分散了，所以，想了想，还是自己搞个博客好了。​说干就干，在网上搜了一波，发现可以借用github和hexo搭建自己的博客，以下是搭建时的一些操作。主要参照了掘金上的一篇文章，文末会给大家推荐一下，该文章写的很详细，良心之作。 github准备1.打开github:https://github.com/,注册账号 2.创建blog的仓库,如图所示： ![](create-blog/image.png)hexo博客本地环境安装]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[使用GitHub和Hexo搭建自己的博客]]></title>
-    <url>%2F2019%2F09%2F12%2Fblog%2F</url>
-    <content type="text"><![CDATA[​ 最近打算看一些框架的源码，但是在正式看之前，突然觉得缺少一个保存和记录的平台，虽然平时也会在掘金、有道云写一些收获，但是觉得还是有点太分散了，所以，想了想，还是自己搞个博客好了。​ 说干就干，在网上搜了一波，发现可以借用github和hexo搭建自己的博客，以下是搭建时的一些操作。主要参照了掘金上的一篇文章，文末会给大家推荐一下，该文章写的很详细，良心之作。 github准备1.打开github:https://github.com/,注册账号 2.创建blog的仓库,如图所示： ![](image.png)]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
-    <url>%2F2019%2F09%2F12%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
-  </entry>
-  <entry>
-    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
-    <url>%2F2019%2F09%2F12%2F%E4%BD%BF%E7%94%A8GItHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%2F</url>
-    <content type="text"></content>
-  </entry>
+<search> 
+  
+  
+    
+    <entry>
+      <title>使用GitHub和Hexo搭建自己的博客</title>
+      <link href="/2019/09/12/blog/"/>
+      <url>/2019/09/12/blog/</url>
+      
+        <content type="html"><![CDATA[<p>​    最近打算看一些框架的源码，但是在正式看之前，突然觉得缺少一个保存和记录的平台，虽然平时也会在掘金、有道云写一些收获，但是觉得还是有点太分散了，所以，想了想，还是自己搞个博客好了。</p><p>​    说干就干，在网上搜了一波，发现可以借用github和hexo搭建自己的博客，以下是搭建时的一些操作。主要参照了掘金上的一篇文章，文末会给大家推荐一下，该文章写的很详细，良心之作。</p><a id="more"></a><h3 id="github准备"><a href="#github准备" class="headerlink" title="github准备"></a>github准备</h3><p>1.打开github:<a href="https://github.com/,注册账号" target="_blank" rel="noopener">https://github.com/,注册账号</a><br>2.创建blog的仓库,如图所示：<br><img alt data-src="github.png"><br>3.新建一个文件,测试能够访问成功<br><img alt data-src="test_git.png"><br>4.打开浏览器访问github page:<a href="https://lingdongyuanjia.github.io/" target="_blank" rel="noopener">https://lingdongyuanjia.github.io/</a></p><h3 id="hexo博客本地环境安装"><a href="#hexo博客本地环境安装" class="headerlink" title="hexo博客本地环境安装"></a>hexo博客本地环境安装</h3><p>1.安装node<br>2.安装git<br>3.全局安装hexo: npm install -g hexo-cli<br>4.初始化hexo目录:hexo init test_blog<br>5.进入目录: cd blog<br>6.安装依赖:npm install<br>7.清除浏览器缓存:hexo clean<br>8.生成静态页面:hexo g<br>9.本地运行:hexo s,端口号默认是4000，如果端口号被占用，可以使用:hexo s –port 6666 切换端口<br>10.浏览器中打开(localhost:4000)或者(127.0.0.1:4000),说明Hexo博客已经成功在本地运行,如图所示：<br><img alt data-src="hexo.png"></p><h3 id="本地博客发布到github"><a href="#本地博客发布到github" class="headerlink" title="本地博客发布到github"></a>本地博客发布到github</h3><p>1.安装将hexo部署到git的插件,在test_blog目录下安装插件:npm install hexo-deployer-git –save<br>2.将本地目录与github关联起来<br>ssh-keygen -t rsa -C “你的git邮箱地址”<br>3.打开.ssh文件夹，将id_rsa.pub拷贝到git下的Setting -&gt; SSH and GPG keys下<br>4.添加New SSH key将之前复制的内容粘贴到key的框里，任意title,完成添加<br><img alt data-src="ssh.png"><br>5.进入test_blog目录下，找到_config.yml博客的配置文件,更改url和deploy下的repo<br><img alt data-src="config.png"><br>6.保存配置，将本地页面上传至:hexo g -d</p><h3 id="修改hexo主题及其他配置"><a href="#修改hexo主题及其他配置" class="headerlink" title="修改hexo主题及其他配置"></a>修改hexo主题及其他配置</h3><p>1._config.yml是博客的配置文件;themes/主题名/_config.yml是主题配置文件<br>2.hexo选题选择：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a><br>3.选择某一主题后，拷贝该主题的的git地址；进入test_blog的theme目录下，安装主题:git clone <a href="https://github.com/klugjo/hexo-theme-clean-blog.git" target="_blank" rel="noopener">https://github.com/klugjo/hexo-theme-clean-blog.git</a><br>4.安装完后，进入博客的配置文件，即test_blog/_config.yml，将theme改为该主题名，清除缓存重新启动<br>5.如需要更改主题内容，进入themes/hexo-theme-next/_config.yml进行修改</p><h3 id="编写markdown文章"><a href="#编写markdown文章" class="headerlink" title="编写markdown文章"></a>编写markdown文章</h3><p>1.创建文章<br>hexo new “文章标题”:此时会在source/_post文件夹中创建一个文件，该文件就是要发布的原始文件<br>2.模版设置<br>当我们使用命令 hexo new “title” 去创建我们的文章时，hexo会根据/scaffolds/post.md文件对新建文件进行初始化，换言之，/scaffolds/post.md文件就是创建新文章的模板，所以我们可以修改它来适应自己的写作习惯</p><h4 id="插入图片的操作"><a href="#插入图片的操作" class="headerlink" title="插入图片的操作"></a>插入图片的操作</h4><pre><code>1.根目录的_config.yml 里的post_asset_folder:这个选项设置为true;2.安装插件:npm install https://github.com/CodeFalling/hexo-asset-image --save;3.完成安装后用hexo新建文章 hexo new &quot;blog&quot; 的时候会发现_posts目录下面会多出一个和文章名字一样的文件夹。4.只要使用![logo](logo.jpg)就可以插入图片。其中[]里面不写文字则没有图片标题。</code></pre><h3 id="踩到的坑"><a href="#踩到的坑" class="headerlink" title="踩到的坑"></a>踩到的坑</h3><p>1.在添加图片时，在.md的文件中习惯性空2格，其他也就是相当于在code中插入内容了，这样无论如何也显示不出来，所以各位老铁在插入图片时，要注意</p><h3 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h3><p>参考文章：<a href="https://juejin.im/post/5caddd1ff265da035e210dce#heading-67" target="_blank" rel="noopener">https://juejin.im/post/5caddd1ff265da035e210dce#heading-67</a><br>hexo主题：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a><br>next文档：<a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">https://theme-next.iissnan.com/</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>
