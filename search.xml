@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
+    <url>%2F2019%2F09%2F12%2Fcreate-blog%2F</url>
+    <content type="text"><![CDATA[最近打算看一些框架的源码，但是在正式看之前，突然觉得缺少一个保存和记录的平台，虽然平时也会在掘金、有道云写一些收获，但是觉得还是有点太分散了，所以，想了想，还是自己搞个博客好了。​说干就干，在网上搜了一波，发现可以借用github和hexo搭建自己的博客，以下是搭建时的一些操作。主要参照了掘金上的一篇文章，文末会给大家推荐一下，该文章写的很详细，良心之作。 github准备1.打开github:https://github.com/,注册账号 2.创建blog的仓库,如图所示： ![](create-blog/image.png)hexo博客本地环境安装]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[使用GitHub和Hexo搭建自己的博客]]></title>
+    <url>%2F2019%2F09%2F12%2Fblog%2F</url>
+    <content type="text"><![CDATA[​ 最近打算看一些框架的源码，但是在正式看之前，突然觉得缺少一个保存和记录的平台，虽然平时也会在掘金、有道云写一些收获，但是觉得还是有点太分散了，所以，想了想，还是自己搞个博客好了。​ 说干就干，在网上搜了一波，发现可以借用github和hexo搭建自己的博客，以下是搭建时的一些操作。主要参照了掘金上的一篇文章，文末会给大家推荐一下，该文章写的很详细，良心之作。 github准备1.打开github:https://github.com/,注册账号 2.创建blog的仓库,如图所示： ![](image.png)]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
+    <url>%2F2019%2F09%2F12%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[使用GitHub和Heox搭建自己的博客]]></title>
+    <url>%2F2019%2F09%2F12%2F%E4%BD%BF%E7%94%A8GItHub%E5%92%8CHexo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%2F</url>
+    <content type="text"></content>
+  </entry>
+</search>
