@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '0RMILRCU42',
+      apiKey: '',
+      indexName: 'senga',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前置知识commander这是用来编写指令和处理命令行的，具体用法如下：const program = require(&amp;quot;commander&amp;quot;); // 定义指令 program .version(&amp;apos;0.0.1&amp;apos;) .command(&amp;apos;init&amp;apos;, &amp;apos;Generate a new project from a template&amp;">
+<meta name="keywords" content="Javascript&#x2F;Node&#x2F;Css&#x2F;Html&#x2F;Vue&#x2F;React&#x2F;Webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿vue-cli搭建自己的cli">
+<meta property="og:url" content="https://ldyjjm.github.io/2019/10/17/cli/index.html">
+<meta property="og:site_name" content="Senga Blog">
+<meta property="og:description" content="前置知识commander这是用来编写指令和处理命令行的，具体用法如下：const program = require(&amp;quot;commander&amp;quot;); // 定义指令 program .version(&amp;apos;0.0.1&amp;apos;) .command(&amp;apos;init&amp;apos;, &amp;apos;Generate a new project from a template&amp;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-18T08:27:26.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="仿vue-cli搭建自己的cli">
+<meta name="twitter:description" content="前置知识commander这是用来编写指令和处理命令行的，具体用法如下：const program = require(&amp;quot;commander&amp;quot;); // 定义指令 program .version(&amp;apos;0.0.1&amp;apos;) .command(&amp;apos;init&amp;apos;, &amp;apos;Generate a new project from a template&amp;">
+  <link rel="canonical" href="https://ldyjjm.github.io/2019/10/17/cli/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>仿vue-cli搭建自己的cli | Senga Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Senga Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://ldyjjm.github.io/2019/10/17/cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="senga">
+      <meta itemprop="description" content="Javascript/Node/Css/Html/Vue/React/Webpack">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Senga Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">仿vue-cli搭建自己的cli
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-17 17:10:01" itemprop="dateCreated datePublished" datetime="2019-10-17T17:10:01+08:00">2019-10-17</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-18 16:27:26" itemprop="dateModified" datetime="2019-10-18T16:27:26+08:00">2019-10-18</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="commander"><a href="#commander" class="headerlink" title="commander"></a>commander</h3><p>这是用来编写指令和处理命令行的，具体用法如下：</p><pre><code>const program = require(&quot;commander&quot;);
+// 定义指令
+program
+.version(&apos;0.0.1&apos;)
+.command(&apos;init&apos;, &apos;Generate a new project from a template&apos;)
+.action(() =&gt; {
+// 回调函数
+})
+// 解析命令行参数
+program.parse(process.argv);</code></pre><a id="more"></a>
+<h3 id="inquirer"><a href="#inquirer" class="headerlink" title="inquirer"></a>inquirer</h3><p>这是个强大的交互式命令行工具，具体用法如下：</p>
+<pre><code>const inquirer = require(&apos;inquirer&apos;);
+inquirer
+.prompt([
+    // 一些交互式的问题
+])
+.then(answers =&gt; {
+    // 回调函数，answers 就是用户输入的内容，是个对象
+});</code></pre><h3 id="chalk"><a href="#chalk" class="headerlink" title="chalk"></a>chalk</h3><p>这是用来修改控制台输出内容样式的，比如颜色啊，具体用法如下：</p>
+<pre><code>const chalk = require(&apos;chalk&apos;);
+console.log(chalk.green(&apos;success&apos;));
+console.log(chalk.red(&apos;error&apos;));</code></pre><h3 id="ora"><a href="#ora" class="headerlink" title="ora"></a>ora</h3><p>这是一个好看的加载，就是你下载的时候会有个转圈圈的那种效果，用法如下：</p>
+<pre><code>const ora = require(&apos;ora&apos;)
+let spinner = ora(&apos;downloading template ...&apos;)
+spinner.start()</code></pre><h3 id="download-git-repo"><a href="#download-git-repo" class="headerlink" title="download-git-repo"></a>download-git-repo</h3><p>看名字很明显了，这是用来下载远程模板的，支持 GitHub、 GitLab 和 Bitbucket 等，用法如下</p>
+<pre><code>const download = require(&apos;download-git-repo&apos;)
+download(repository, destination, options, callback)</code></pre><p>其中 repository 是远程仓库地址；destination 是存放下载的文件路径，也可以直接写文件名，默认就是当前目录；options 是一些选项，比如 { clone：boolean } 表示用 http download 还是 git clone 的形式下载。</p>
+<h2 id="目录搭建"><a href="#目录搭建" class="headerlink" title="目录搭建"></a>目录搭建</h2><p>1.首先我们要创建一个文件夹，并取名叫 xr-cli；<br>2.在该目录下执行 npm init 命令（你应该有安装 node 吧😂），一路回车，就会生成一个生成 package.json 文件，在 package.json 里面写入以下依赖并执行 npm install 安装，如下：</p>
+<pre><code>&quot;dependencies&quot;: {
+    &quot;chalk&quot;: &quot;^2.4.2&quot;,
+    &quot;commander&quot;: &quot;^2.19.0&quot;,
+    &quot;download-git-repo&quot;: &quot;^1.1.0&quot;,
+    &quot;inquirer&quot;: &quot;^6.2.2&quot;,
+    &quot;ora&quot;: &quot;^3.2.0&quot;
+}</code></pre><p>3.新建一个 bin 文件夹，并在 bin 目录下新建一个无后缀名的 xr 文件，并写上</p>
+<pre><code>#!/usr/bin/env node
+console.log(&apos;hello&apos;);</code></pre><p>这个文件就是我们整个脚手架的入口文件，我们用 node ./bin/xr 运行一下，就能在控制台打印出 hello，如下图：</p>
+<p><img alt="logo" data-src="project.png"></p>
+<p>这里要注意开头的 #!/usr/bin/env node 这个语句必须加上，主要是为了让系统看到这一行的时候，会沿着该路径去查找 node 并执行，主要是为了兼容 Mac ，确保可执行</p>
+<p>当前，bin 目录下就只有一个文件，就是入口文件 xr。所以现在我们先来编写这个文件，由于内容较少，我们直接看代码：</p>
+<pre><code>#!/usr/bin/env node
+const program = require(&apos;commander&apos;)
+
+// 定义当前版本
+// 定义使用方法
+// 定义四个指令
+program
+.version(require(&apos;../package&apos;).version)
+.usage(&apos;&lt;command&gt; [options]&apos;)
+.command(&apos;add&apos;, &apos;add a new template&apos;)
+.command(&apos;delete&apos;, &apos;delete a template&apos;)
+.command(&apos;list&apos;, &apos;list all the templates&apos;)
+.command(&apos;init&apos;, &apos;generate a new project from a template&apos;)
+
+// 解析命令行参数
+program.parse(process.argv)</code></pre><p>这个文件的主要作用就是定义指令，现在我们用 node ./bin/xr 运行一下，就能看到如下结果<br><img alt="logo" data-src="xr.png"></p>
+<p>当然，你可能会觉得每次输入 node ./bin/xr 这个命令有点麻烦，没关系，我们可以在 package.json 里面写入已下内容：</p>
+<pre><code>// bin 用来指定每个命令所对应的可执行文件的位置
+&quot;bin&quot;: {
+    &quot;xr&quot;: &quot;bin/xr&quot;
+}</code></pre><p>然后在根目录下执行 npm link（就是把命令挂载到全局的意思），这样我们每次只要输入 xr，就可以直接运行了，so cool，就像下面这样<br><img alt="logo" data-src="link.png"></p>
+<p>是不是好像有点样子了呢😁😁😁，那就让我们继续完善下 bin 目录吧！ok，让我们在 bin 目录下再新建四个文件，分别对应上面的四个指令，然后分别处理四个指令要做的事情，如下图:<br><img alt="logo" data-src="command.png"></p>
+<p>同样的，我们修改一下 package.json 里面的 bin 内容，如下：</p>
+<pre><code>&quot;bin&quot;: {
+    &quot;xr&quot;: &quot;bin/xr&quot;,
+    &quot;xr-add&quot;: &quot;bin/xr-add&quot;,
+    &quot;xr-delete&quot;: &quot;bin/xr-delete&quot;,
+    &quot;xr-list&quot;: &quot;bin/xr-list&quot;,
+    &quot;xr-init&quot;: &quot;bin/xr-init&quot;
+}</code></pre><p>然后执行 npm unlink 解绑全局命令，再执行 npm link 重新把命令绑定到全局，就像下面这样：<br><img alt="logo" data-src="senga-link.png"></p>
+<p>最后顺便在根目录下新建一个 template.json 文件，里面的内容就是一个 {}。</p>
+<h2 id="编写指令"><a href="#编写指令" class="headerlink" title="编写指令"></a>编写指令</h2><p>好了，一切准备就绪，接下来就让我们来写下具体的四个指令吧。</p>
+<h3 id="xr-add"><a href="#xr-add" class="headerlink" title="xr-add"></a>xr-add</h3><p>这个内容也是比较少，直接看代码：</p>
+<pre><code>#!/usr/bin/env node
+
+// 交互式命令行
+const inquirer = require(&apos;inquirer&apos;)
+// 修改控制台字符串的样式
+const chalk = require(&apos;chalk&apos;)
+// node 内置文件模块
+const fs = require(&apos;fs&apos;)
+// 读取根目录下的 template.json
+const tplObj = require(`${__dirname}/../template`)
+
+// 自定义交互式命令行的问题及简单的校验
+let question = [
+{
+    name: &quot;name&quot;,
+    type: &apos;input&apos;,
+    message: &quot;请输入模板名称&quot;,
+    validate (val) {
+    if (val === &apos;&apos;) {
+        return &apos;Name is required!&apos;
+    } else if (tplObj[val]) {
+        return &apos;Template has already existed!&apos;
+    } else {
+        return true
+    }
+    }
+},
+{
+    name: &quot;url&quot;,
+    type: &apos;input&apos;,
+    message: &quot;请输入模板地址&quot;,
+    validate (val) {
+    if (val === &apos;&apos;) return &apos;The url is required!&apos;
+    return true
+    }
+}
+]
+
+inquirer
+.prompt(question).then(answers =&gt; {
+    // answers 就是用户输入的内容，是个对象
+    let { name, url } = answers;
+    // 过滤 unicode 字符
+    tplObj[name] = url.replace(/[\u0000-\u0019]/g, &apos;&apos;)
+    // 把模板信息写入 template.json 文件中
+    fs.writeFile(`${__dirname}/../template.json`, JSON.stringify(tplObj), &apos;utf-8&apos;, err =&gt; {
+    if (err) console.log(err)
+    console.log(&apos;\n&apos;)
+    console.log(chalk.green(&apos;Added successfully!\n&apos;))
+    console.log(chalk.grey(&apos;The latest template list is: \n&apos;))
+    console.log(tplObj)
+    console.log(&apos;\n&apos;)
+    })
+})</code></pre><p>这个文件主要目的就是添加模板并存储起来，上面的注释应该都写的挺清楚了。我们执行 xr add 来看看效果<br><img alt="logo" data-src="add.png"></p>
+<p>这里的模板名称（自己随便取）相当于 vue init webpack project-name 当中的 webpack；模板地址要注意一下，像下面这样写就可以，这里以 github 为例：</p>
+<p><img alt="logo" data-src="add-pic.png"><br>这里补充一下 xr add 怎么对应到 xr-add 的：我们前面在定义 program.command(‘add’).action(() =&gt; {}) 的时候没有写 action 这个回调函数，而当我们执行 xr add 的时候，commander 会尝试在入口脚本的目录中搜索可执行文件，找到形如 program-command（这里就是 xr-add）的命令来执行，大概是这么个意思，下面的命令也是一样的道理。</p>
+<h3 id="xr-delete"><a href="#xr-delete" class="headerlink" title="xr-delete"></a>xr-delete</h3><p>如果你理解了上面的那个步骤，这步对你来说应该也是洒洒水啦！上代码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#!<span class="regexp">/usr/</span>bin/env node</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inquirer = <span class="built_in">require</span>(<span class="string">'inquirer'</span>)</span><br><span class="line"><span class="keyword">const</span> chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> tplObj = <span class="built_in">require</span>(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/../template`</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> question = [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">"name"</span>,</span><br><span class="line">    message: <span class="string">"请输入要删除的模板名称"</span>,</span><br><span class="line">    validate (val) &#123;</span><br><span class="line">      <span class="keyword">if</span> (val === <span class="string">''</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Name is required!'</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!tplObj[val]) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Template does not exist!'</span></span><br><span class="line">      &#125; <span class="keyword">else</span>  &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">inquirer</span><br><span class="line">  .prompt(question).then(<span class="function"><span class="params">answers</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> &#123; name &#125; = answers;</span><br><span class="line">    <span class="keyword">delete</span> tplObj[name]</span><br><span class="line">    <span class="comment">// 更新 template.json 文件</span></span><br><span class="line">    fs.writeFile(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/../template.json`</span>, <span class="built_in">JSON</span>.stringify(tplObj), <span class="string">'utf-8'</span>, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (err) <span class="built_in">console</span>.log(err)</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'\n'</span>)</span><br><span class="line">      <span class="built_in">console</span>.log(chalk.green(<span class="string">'Deleted successfully!\n'</span>))</span><br><span class="line">      <span class="built_in">console</span>.log(chalk.grey(<span class="string">'The latest template list is: \n'</span>))</span><br><span class="line">      <span class="built_in">console</span>.log(tplObj)</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'\n'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>应该很好理解，就不过多解释了，我们直接执行 xr delete 看下效果：<br><img alt="logo" data-src="delete-pic.png"></p>
+<h3 id="xr-list"><a href="#xr-list" class="headerlink" title="xr-list"></a>xr-list</h3><p>这个更简单了，两行代码搞定：</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> tplObj = require(<span class="string">`$&#123;__dirname&#125;/../template`</span>)</span><br><span class="line">console.log(tplObj)</span><br></pre></td></tr></table></figure>
+
+<p>是不是简单到爆💥。我们执行 xr list 看看效果：<br><img alt="logo" data-src="list-pic.png"><br>因为刚才一添加一删除，所以目前没有模板，就输出 {}。</p>
+<h3 id="xr-init"><a href="#xr-init" class="headerlink" title="xr-init"></a>xr-init</h3><p>这应该是最主要（但不难）的一步了，毕竟我们写到现在还没有通过命令初始化过一个项目呢😭。所以这步的重点就是执行 download 方法，并传入相应参数，具体看代码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">#!<span class="regexp">/usr/</span>bin/env node</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>)</span><br><span class="line"><span class="keyword">const</span> chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>)</span><br><span class="line"><span class="keyword">const</span> ora = <span class="built_in">require</span>(<span class="string">'ora'</span>)</span><br><span class="line"><span class="keyword">const</span> download = <span class="built_in">require</span>(<span class="string">'download-git-repo'</span>)</span><br><span class="line"><span class="keyword">const</span> tplObj = <span class="built_in">require</span>(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/../template`</span>)</span><br><span class="line"></span><br><span class="line">program</span><br><span class="line">  .usage(<span class="string">'&lt;template-name&gt; [project-name]'</span>)</span><br><span class="line">program.parse(process.argv)</span><br><span class="line"><span class="comment">// 当没有输入参数的时候给个提示</span></span><br><span class="line"><span class="keyword">if</span> (program.args.length &lt; <span class="number">1</span>) <span class="keyword">return</span> program.help()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 好比 vue init webpack project-name 的命令一样，第一个参数是 webpack，第二个参数是 project-name</span></span><br><span class="line"><span class="keyword">let</span> templateName = program.args[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">let</span> projectName = program.args[<span class="number">1</span>]</span><br><span class="line"><span class="comment">// 小小校验一下参数</span></span><br><span class="line"><span class="keyword">if</span> (!tplObj[templateName]) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(chalk.red(<span class="string">'\n Template does not exit! \n '</span>))</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!projectName) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(chalk.red(<span class="string">'\n Project should not be empty! \n '</span>))</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">url = tplObj[templateName]</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(chalk.white(<span class="string">'\n Start generating... \n'</span>))</span><br><span class="line"><span class="comment">// 出现加载图标</span></span><br><span class="line"><span class="keyword">const</span> spinner = ora(<span class="string">"Downloading..."</span>);</span><br><span class="line">spinner.start();</span><br><span class="line"><span class="comment">// 执行下载方法并传入参数</span></span><br><span class="line">download (</span><br><span class="line">  url,</span><br><span class="line">  projectName,</span><br><span class="line">  err =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      spinner.fail();</span><br><span class="line">      <span class="built_in">console</span>.log(chalk.red(<span class="string">`Generation failed. <span class="subst">$&#123;err&#125;</span>`</span>))</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 结束加载图标</span></span><br><span class="line">    spinner.succeed();</span><br><span class="line">    <span class="built_in">console</span>.log(chalk.green(<span class="string">'\n Generation completed!'</span>))</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'\n To get started'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`\n    cd <span class="subst">$&#123;projectName&#125;</span> \n`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>ok，我们执行一下 xr init simple test，记得先执行一下 xr add：</p>
+<p><img alt="logo" data-src="init-pic.png"></p>
+<p>现在我们就可以在左侧的目录中看到 test 项目了，如下图：<br><img alt="logo" data-src="directory.png"><br>至此，一个小小的脚手架就做完了。🌹🌹🌹此处应该有鲜花和掌声👏👏👏</p>
+<h2 id="发布到npm"><a href="#发布到npm" class="headerlink" title="发布到npm"></a>发布到npm</h2><p>既然以上命令都执行成功了，那接下来我们就把它发布到 npm 上吧（写都写了，不能浪费😬）。</p>
+<p>删除 test 文件夹，它就本地测试用的，用完就抛弃它（当然做人不能这样）<br>在根目录下新建 README.md 文件，随便写点使用说明，假装正经一下<br>在根目录下新建 .npmignore 文件，并写入     /node_modules，意思就是发布的时候忽略 node_modules 文件夹，<br>去 npm 官网注册个账号（很简单的），同时搜索一下 xr-cli 这个名字，看看有没有人用，有的话就换一个罗</p>
+<p><img alt="logo" data-src="npm.png"></p>
+<p>现在让我们回到项目根目录，执行 npm login 登入 npm 账号，再执行 npm publish 发布，就像下面这样：<br><img alt="logo" data-src="npm-login.png"><br>没错，就是这样两个简单的命令，我们就发布成功啦，真是可喜可贺🍺🍺🍺。大概过一分钟左右（反正挺快的），我们再去 npm 官网搜下 xr-cli，就可以看到自己的脚手架啦，哈哈哈哈，贼开心👍👍👍。<br><img alt="logo" data-src="npm-publish.png"><br>这里补充说明一点：根据规范，只有在发包的24小时内才允许撤销发布的包，所以为了不污染 npm 网站，如果只是测试的话就执行 npm unpublish –force 删除吧，毕竟我们都是有素质的人。<br>别急，还没有结束🙅‍♀️。发都发出去了，怎么也得验证一波撒。嗯，说的有道理，无法反驳，那就赶紧验收吧！这里我们记得先用 npm unlink 解绑一下命令，不然会相互影响。下面我们打开终端，输入 npm i xr-cli -g 全局安装一下脚手架，然后执行 xr，如果出现下图中的模样就说明已经安装成功了。</p>
+<p><img alt="logo" data-src="cli-install.png"></p>
+<p>接下来进入到桌面，执行 xr init simple xr-test，不一会就可以在桌面上看到自己的项目啦。</p>
+<p><img alt="logo" data-src="result.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面的操作只要你熟悉了几遍之后，再去看看 vue-cli 的源码结构，你就会有种拨开云雾见月明的感觉（它只是比我们这个脚手架完善很多很多很多而已😭😭😭）。<br>当然了，这只是渣渣版本。你可以往里面添加更多的东西，比如自动化构建和动态模板啊（其实动态模板是个大头），然后尝试写下更多更好的交互和功能，这样你就也能拥有一个属于自己的脚手架啦，心动不如行动，还等什么呢，不要998，只要有键盘，赶紧敲吧同志们，Let’s go！🌈</p>
+<h2 id="踩到的坑"><a href="#踩到的坑" class="headerlink" title="踩到的坑"></a>踩到的坑</h2><p>在填写模版的url时，不是填https://之类的地址，填的是git的项目名称/仓库名称，例如：lingdongyuanjia/test-cli</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>掘金：<a href="https://juejin.im/post/5c94fef7f265da60fd0c15e8" target="_blank" rel="noopener">https://juejin.im/post/5c94fef7f265da60fd0c15e8</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/18/BFF/" rel="next" title="大前端架构的学习">
+                  <i class="fa fa-chevron-left"></i> 大前端架构的学习
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commander"><span class="nav-number">1.1.</span> <span class="nav-text">commander</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inquirer"><span class="nav-number">1.2.</span> <span class="nav-text">inquirer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chalk"><span class="nav-number">1.3.</span> <span class="nav-text">chalk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ora"><span class="nav-number">1.4.</span> <span class="nav-text">ora</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#download-git-repo"><span class="nav-number">1.5.</span> <span class="nav-text">download-git-repo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录搭建"><span class="nav-number">2.</span> <span class="nav-text">目录搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写指令"><span class="nav-number">3.</span> <span class="nav-text">编写指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xr-add"><span class="nav-number">3.1.</span> <span class="nav-text">xr-add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xr-delete"><span class="nav-number">3.2.</span> <span class="nav-text">xr-delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xr-list"><span class="nav-number">3.3.</span> <span class="nav-text">xr-list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xr-init"><span class="nav-number">3.4.</span> <span class="nav-text">xr-init</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布到npm"><span class="nav-number">4.</span> <span class="nav-text">发布到npm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#踩到的坑"><span class="nav-number">6.</span> <span class="nav-text">踩到的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpeg"
+      alt="senga">
+  <p class="site-author-name" itemprop="name">senga</p>
+  <div class="site-description" itemprop="description">Javascript/Node/Css/Html/Vue/React/Webpack</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/ldyjjm" title="GitHub &rarr; https://github.com/ldyjjm" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="/ldyjjm@163.com" title="E-Mail &rarr; ldyjjm@163.com"><i class="fa fa-fw fa-globe"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">senga</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
